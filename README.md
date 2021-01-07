@@ -50,10 +50,17 @@ colors to grayscale.
 - minor: grayscale persists if you exit Xorg without resetting color
 - minor: screenshots taken are not in grayscale
 
+## Get the script
+
+```
+cd /somewhere/in/your/PATH
+wget https://raw.githubusercontent.com/bubbleguuum/toggle-monitor-grayscale/main/toggle-monitor-grayscale.sh && chmod +x toggle-monitor-grayscale.sh
+```
+
 ## Usage
 
 ```
-./toggle-monitor-grayscale.sh -h
+toggle-monitor-grayscale.sh -h
 
 Toggle monitors between color and grayscale mode.
 
