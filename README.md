@@ -41,10 +41,12 @@ colors to grayscale.
 ##### Advantages
 
 - not specific to a compositor
+- can be set to only a specific monitor (see usage)
 
 ##### Inconvenients
 
 - video card specific
+- on Optimus laptops, will not work with the laptop's panel. Will work with external screens managed by the dGPU
 - minor: grayscale persists if you exit Xorg without resetting color
 - minor: screenshots taken are not in grayscale
 
