@@ -8,17 +8,17 @@ It can be bound to a keyboard shortcut to easily toggle on the fly.
 Especially combined with a warm monitor color preset (that filters out most blue light) and light themes
 for both your Desktop Environment and apps, for creating a paper-like looking desktop.
 Try it and you might be surprised !
-- grayscale can increase concentration and reduces distractions
+- grayscale can increase concentration and reduces distractions. I've also found it to have a calming effect
 
 ## How does it work ?
 
-The script employ two distinct methods to make the screen grayscale.
+The script employs two distinct methods to make the screen grayscale.
 Both give close results in term of grayscale but they are difficult to compare
 as the nvidia method cannot be screenshotted:
 
 ### Compositor based 
 
-You must use picom (recommended!) or compton for this method to work.
+You must use picom (recommended!) or compton (untested) for this method to work.
 It uses a glx shader to transform color to grayscale.
 These compositors are often used in conjunction with tiling Window Managers such as i3.
 To use `compton` in place of `picom` you will have to edit the `compositor` variable of the script.
@@ -41,17 +41,26 @@ colors to grayscale.
 ##### Advantages
 
 - not specific to a compositor
+- can be set to only a specific monitor (see usage)
 
 ##### Inconvenients
 
 - video card specific
+- on Optimus laptops, will not work with the laptop's panel. Will work with external screens managed by the dGPU
 - minor: grayscale persists if you exit Xorg without resetting color
 - minor: screenshots taken are not in grayscale
+
+## Get the script
+
+```
+cd /somewhere/in/your/PATH
+wget https://raw.githubusercontent.com/bubbleguuum/toggle-monitor-grayscale/main/toggle-monitor-grayscale.sh && chmod +x toggle-monitor-grayscale.sh
+```
 
 ## Usage
 
 ```
-./toggle-monitor-grayscale.sh -h
+toggle-monitor-grayscale.sh -h
 
 Toggle monitors between color and grayscale mode.
 
