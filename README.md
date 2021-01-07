@@ -18,10 +18,10 @@ as the nvidia method cannot be screenshotted:
 
 ### Compositor based method
 
-You must use picom (recommended!) or compton (untested) for this method to work.
+You must use `picom` (recommended) or `compton` (untested) for this method to work.
 It uses a glx shader to transform color to grayscale.
 These compositors are often used in conjunction with tiling Window Managers such as i3.
-To use `compton` in place of `picom` you will have to edit the `compositor` variable of the script.
+To use `compton` in place of `picom` you will have to edit the `compositor` variable at the beginning of the script.
 
 ##### Advantages
 
