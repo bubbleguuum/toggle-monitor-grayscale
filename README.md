@@ -42,6 +42,8 @@ colors to grayscale.
 
 - not specific to a compositor
 - can be set to only a specific monitor (see usage)
+- can be used to only desaturate colors instead of full grayscale. 
+  Edit script and set variable `desaturate_value` to a value between -1024 and 0 (-1024 => full grayscale)
 
 ##### Inconvenients
 
