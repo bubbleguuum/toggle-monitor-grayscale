@@ -1,0 +1,21 @@
+BLK                   0
+CAPABILITY            0
+CHR                   0
+DIR                   1
+DOOR                  0
+EXEC                  0
+FIFO                  0
+FILE                  0
+LINK                  0
+MULTIHARDLINK         0
+# "NORMAL don't reset the bold attribute -
+# https://github.com/trapd00r/LS_COLORS/issues/11
+#NORMAL                38;5;254
+NORMAL                0
+ORPHAN                0
+OTHER_WRITABLE        0
+SETGID                0
+SETUID                0
+SOCK                  0
+STICKY                0
+STICKY_OTHER_WRITABLE 0
