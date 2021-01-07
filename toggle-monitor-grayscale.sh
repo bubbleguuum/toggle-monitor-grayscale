@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # should also work with compositor=compton, untested
 compositor=picom
@@ -14,13 +14,13 @@ function usage {
     echo "$bin $compositor [$compositor args]"
     echo "$bin nvidia [monitor]"
     echo
-    echo "$compositor:   use a $compositor glx shader to set grayscale"
+    echo "$compositor:   use a glx shader to set grayscale"
     echo "nvidia:  use NVIDIA proprietary driver Digital Vibrance setting to set grayscale"
-    echo "auto:    use $compositor if running, othewise nvidia if available"
+    echo "auto:    use $compositor if running, otherwise nvidia if available"
     echo
     echo "$compositor args: in $compositor mode, optional $compositor parameters"
-    echo "monitor: in nvidia mode, an optional monitor name as listed by xrandr"
-    echo "         if unspecified, apply to all monitors managed by the NVIDIA driver"
+    echo "monitor:    in nvidia mode, an optional monitor name as enumerated by xrandr."
+    echo "            if unspecified, apply to all monitors managed by the NVIDIA driver"
     echo
     echo "if invoked with no argument, auto is used."
     echo
@@ -34,11 +34,15 @@ function toggle_nvidia {
     
     value=$(nvidia-settings -t -q DigitalVibrance)
 
-    if (( value == -1024 )); then
+    # set a value in [-1024..0[ range to desaturate colors instead of full grayscale
+    # -1024 => full grayscale
+    desaturate_value=-1024
+    
+    if (( value == $desaturate_value )); then
 	value=0
 	toggle_mode="color"
     else
-	value=-1024
+	value=$desaturate_value
 	toggle_mode="grayscale"
     fi
 
