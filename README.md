@@ -12,11 +12,11 @@ Try it and you might be surprised !
 
 ## How does it work ?
 
-The script employs two distinct methods to make the screen grayscale.
+The script can turn the screen to grayscale using 2 separate methods.
 Both give close results in term of grayscale but they are difficult to compare
 as the nvidia method cannot be screenshotted:
 
-### Compositor based 
+### Compositor based method
 
 You must use picom (recommended!) or compton (untested) for this method to work.
 It uses a glx shader to transform color to grayscale.
@@ -32,7 +32,7 @@ To use `compton` in place of `picom` you will have to edit the `compositor` vari
 
 - requires specific compositor
 
-### NVIDIA drivers based
+### NVIDIA based method
 
 You will need a NVIDIA card and the NVIDIA proprietary drivers.
 It uses the Digital Vibrance property of these drivers to transform the 
