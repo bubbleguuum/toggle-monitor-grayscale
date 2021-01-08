@@ -12,9 +12,7 @@ Try it and you might be surprised !
 
 ## How does it work ?
 
-The script can turn the screen to grayscale using 2 separate methods.
-Both give close results in term of grayscale but they are difficult to compare
-as the nvidia method cannot be screenshotted:
+The script can turn the screen to grayscale using 2 separate methods
 
 ### Compositor based method
 
@@ -53,6 +51,15 @@ colors to grayscale.
 - on Optimus laptops, will not work with the laptop's panel. Will work with external screens managed by the dGPU
 - minor: grayscale persists if you exit Xorg without resetting color
 - minor: Digital Vibrance cannot be captured on screenshots, thus always in color
+
+## Comparison between the 2 methods
+
+It is not possible to generate a screenshot of graycaled sceen with the NVIDIA method (unlike the compositor method).
+The only way I've found to compare them is to take a first screenshot of the screen in color and a second screenshot with the compositor method in grayscale.
+Then compare both screenshots on [this web site](https://www.diffchecker.com/image-diff/) turning grayscale with the NVIDIA method which will grayscale the color screenshot 
+but not have any effect on the already grayscaled compositor screenshot.
+It turns out that the NVIDIA method produces darker grayscale than the compositor method, preserving more details on images such as photos (at the expense of
+making them darker). The difference between the 2 methods is marginal for text.
 
 ## Get the script
 
