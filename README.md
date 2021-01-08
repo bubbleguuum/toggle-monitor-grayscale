@@ -121,13 +121,16 @@ Fo this, create of modify the `userContent.css` file in `/path/to/your/firefox p
 ```
 a {
     color: #000000 !important;
+    background-color:transparent !important; /* necessary so link is always readable */
     text-decoration: underline !important; 
 }  /* Unvisited link color */
 
 a:visited {
     color: #7f7f7f !important;
+    background-color:transparent !important; /* necessary so link is always readable */
     text-decoration: underline !important; 
 }   /* Visited link color */
+
 ```
 
 This will override all sites to make all links underlined (a bit heavy but very visible), unvisited link in full black and visited links in medium gray.
