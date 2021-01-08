@@ -18,17 +18,18 @@ as the nvidia method cannot be screenshotted:
 
 ### Compositor based method
 
-You must use `picom` (recommended) or `compton` (untested) for this method to work.
-It uses a glx shader to transform color to grayscale.
+For this method, you must use `picom` (recommended) or `compton` (untested) as compositor and have a video card 
+that plays nice with the `glx` backend (probably most of them these days).
 These compositors are often used in conjunction with tiling Window Managers such as i3.
 To use `compton` in place of `picom` you will have to edit the `compositor` variable at the beginning of the script.
+This method uses a glx shader to transform color to grayscale.
 
 ##### Advantages
 
 - not video card specific
-- screenshot taken are in grayscale
+- screenshots taken are in grayscale
 
-##### Inconvenients
+##### Drawbacks
 
 - requires specific compositor
 
@@ -44,13 +45,14 @@ colors to grayscale.
 - can be set to only a specific monitor (see usage)
 - can be used to only desaturate colors instead of full grayscale. 
   Edit script and set variable `desaturate_value` to a value between -1024 and 0 (-1024 => full grayscale)
+- simplier than restarting the compositor  
 
-##### Inconvenients
+##### Drawbacks
 
 - video card specific
 - on Optimus laptops, will not work with the laptop's panel. Will work with external screens managed by the dGPU
 - minor: grayscale persists if you exit Xorg without resetting color
-- minor: screenshots taken are not in grayscale
+- minor: Digital Vibrance cannot be captured on screenshots, thus always in color
 
 ## Get the script
 
