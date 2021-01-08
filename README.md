@@ -20,7 +20,7 @@ as the nvidia method cannot be screenshotted:
 
 For this method, you must use `picom` (recommended) or `compton` (untested) as compositor and have a video card 
 that plays nice with the `glx` backend (probably most of them these days).
-These compositors are often used in conjunction with tiling Window Managers such as i3.
+These compositors are often used in conjunction with tiling Window Managers such as `i3`.
 To use `compton` in place of `picom` you will have to edit the `compositor` variable at the beginning of the script.
 This method uses a glx shader to transform color to grayscale.
 
@@ -36,7 +36,7 @@ This method uses a glx shader to transform color to grayscale.
 ### NVIDIA based method
 
 You will need a NVIDIA card and the NVIDIA proprietary drivers.
-It uses the Digital Vibrance property of these drivers to transform the 
+This method uses the Digital Vibrance property of these drivers to transform the 
 colors to grayscale.
 
 ##### Advantages
