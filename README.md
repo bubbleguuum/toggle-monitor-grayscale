@@ -95,11 +95,32 @@ if invoked with no argument, auto is used.
 If you use grayscale mode most of the time, you will probably want to do some adjustments to your setup,
 some of which are personal preference:
 
+#### General
+
 - if your monitor has a warm color preset, use it (or make your own). For example, my monitor has a "Paper" preset and it is perfect, cutting a lot of blue light
 - consider using a light theme for your Desktop Environment (if not using a standalone WM) and apps
+
+
+#### Terminal
+
 - configure your terminal to use a white (or light) background combined with black text
 - you will notice that the colored output of `ls` is not that readable. You can either disable color for `ls` (make sure 
 that the `--color` option is not passed to it, often in an alias or shell function of your distro), or you can use the `.dir_colors_grayscale` file of this
 repo which disables all colors, except folders that are bold. To use it: `eval $(dircolors -b .dir_colors_grayscale)` or if you want to make it permanent
 copy that file as `~/.dir_colors`. This file can also be customized if you want to add more font styling (italics, underline, reverse video, ...) to some file types. It is also a good idea to use the -F option of `ls` for appending a character at the end of folder, executable, link... files to indidicate their types (see `man ls`).
-- syntax highlighting in editors and IDEs will likely have to be revised to be grayscale friendly. This can use a combination of bold, italics, underline and maybe 1 or 2 colors that can be distinguished from normal text while remaining readable. There may be some premade eink color schemes available that can be used.
+
+#### Syntax highlighting
+
+Syntax highlighting in editors and IDEs will likely have to be revised to be grayscale friendly. This can use a combination of bold, italics, underline and maybe 1 or 2 colors that can be distinguished from normal text while remaining readable. There may be some premade eink color schemes available that can be used.
+
+#### Firefox
+
+Firefox may need some adjustments too, especially to make links easier to see. 
+I suggest to set Firefox to use a light theme and make these simple adjustments (for a light theme): go into Preferences > Generals > Colors... (under fonts and colors), and set:
+
+- "Text" to black
+- "Background" to some light gray. I use #F2F3F7 which is the color I also use in other programs (terminal, IDEs, ...). This value works well in color mode too.
+- "Unvisited Links" and "Visited Links" to #666666 which is medium gray. It will not be possible to make the distinctions between both type of links but grayscale implies some concessions
+- disable 'Use system colors' (important)
+- keep 'Underline links' enabled
+- Set the "override specified colors..." setting to "Always", to always apply our custom colors
