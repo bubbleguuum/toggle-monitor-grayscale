@@ -116,14 +116,18 @@ Syntax highlighting in editors and IDEs will likely have to be revised to be gra
 #### Firefox
 
 Firefox may need some adjustments too, especially to make links easier to see. 
-I suggest to set Firefox to use a light theme and make these simple adjustments (for a light theme): go into Preferences > Generals > Colors... (under fonts and colors), and set:
+Fo this, create of modify the `userContent.css` file in `/path/to/your/firefox profile/chrome` folder:
 
-- "Unvisited Links" and "Visited Links" to #666666 which is medium gray. It will not be possible to make the distinctions between both type of links but grayscale implies some concessions
-- keep 'Underline links' enabled
-- Set the "override specified colors..." setting to "Always", to always apply our custom colors
+```
+a {
+    color: #000000 !important;
+    text-decoration: underline !important; 
+}  /* Unvisited link color */
 
-Optional, for overriding system theme text and background colors:
+a:visited {
+    color: #7f7f7f !important;
+    text-decoration: underline !important; 
+}   /* Visited link color */
+```
 
-- "Text" to black
-- "Background" to some light gray. I use #F2F3F7 which is the color I also use in other programs (terminal, IDEs, ...). This value works well in color mode too.
-- disable 'Use system colors'
+This will override all sites to make all links underlined (a bit heavy but very visible), unvisited link in full black and visited links in medium gray.
