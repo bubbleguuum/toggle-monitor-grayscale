@@ -54,10 +54,10 @@ colors to grayscale.
 
 ## Comparison between the 2 methods
 
-It is not possible to generate a screenshot of graycaled sceen with the NVIDIA method (unlike the compositor method).
-The only way I've found to compare them is to take a first screenshot of the screen in color and a second screenshot with the compositor method in grayscale.
+It is not possible to make a screenshot of a graycaled screen with the NVIDIA method (unlike the compositor method).
+The only way I've found to compare them is to take a screenshot of the screen in color and a second screenshot with the compositor method in grayscale.
 Then compare both screenshots on [this web site](https://www.diffchecker.com/image-diff/) turning grayscale with the NVIDIA method which will grayscale the color screenshot 
-but not have any effect on the already grayscaled compositor screenshot.
+to the NVIDIA method but not have any effect on the already grayscaled compositor screenshot.
 It turns out that the NVIDIA method produces darker grayscale than the compositor method, preserving more details on images such as photos (at the expense of
 making them darker). The difference between the 2 methods is marginal for text.
 
