@@ -12,9 +12,7 @@ Try it and you might be surprised !
 
 ## How does it work ?
 
-The script can turn the screen to grayscale using 2 separate methods.
-Both give close results in term of grayscale but they are difficult to compare
-as the nvidia method cannot be screenshotted:
+The script can turn the screen to grayscale using 2 separate methods
 
 ### Compositor based method
 
@@ -54,6 +52,15 @@ colors to grayscale.
 - minor: grayscale persists if you exit Xorg without resetting color
 - minor: Digital Vibrance cannot be captured on screenshots, thus always in color
 
+## Comparison between the 2 methods
+
+It is not possible to make a screenshot of a graycaled screen with the NVIDIA method (unlike the compositor method).
+The only way I've found to compare them is to take a screenshot of the screen in color and a second screenshot with the compositor method in grayscale.
+Then compare both screenshots on [this web site](https://www.diffchecker.com/image-diff/) turning grayscale with the NVIDIA method which will grayscale the color screenshot 
+to the NVIDIA method but not have any effect on the already grayscaled compositor screenshot.
+It turns out that the NVIDIA method produces darker grayscale than the compositor method, preserving more details on images such as photos (at the expense of
+making them darker). The difference between the 2 methods is marginal for text.
+
 ## Get the script
 
 ```
@@ -88,11 +95,42 @@ if invoked with no argument, auto is used.
 If you use grayscale mode most of the time, you will probably want to do some adjustments to your setup,
 some of which are personal preference:
 
+#### General
+
 - if your monitor has a warm color preset, use it (or make your own). For example, my monitor has a "Paper" preset and it is perfect, cutting a lot of blue light
 - consider using a light theme for your Desktop Environment (if not using a standalone WM) and apps
+
+
+#### Terminal
+
 - configure your terminal to use a white (or light) background combined with black text
 - you will notice that the colored output of `ls` is not that readable. You can either disable color for `ls` (make sure 
 that the `--color` option is not passed to it, often in an alias or shell function of your distro), or you can use the `.dir_colors_grayscale` file of this
 repo which disables all colors, except folders that are bold. To use it: `eval $(dircolors -b .dir_colors_grayscale)` or if you want to make it permanent
 copy that file as `~/.dir_colors`. This file can also be customized if you want to add more font styling (italics, underline, reverse video, ...) to some file types. It is also a good idea to use the -F option of `ls` for appending a character at the end of folder, executable, link... files to indidicate their types (see `man ls`).
-- syntax highlighting in editors and IDEs will likely have to be revised to be grayscale friendly. This can use a combination of bold, italics, underline and maybe 1 or 2 colors that can be distinguished from normal text while remaining readable. There may be some premade eink color schemes available that can be used.
+
+#### Syntax highlighting
+
+Syntax highlighting in editors and IDEs will likely have to be revised to be grayscale friendly. This can use a combination of bold, italics, underline and maybe 1 or 2 colors that can be distinguished from normal text while remaining readable. There may be some premade eink color schemes available that can be used.
+
+#### Firefox
+
+Firefox may need some adjustments too, especially to make links easier to see. 
+Fo this, create of modify the `userContent.css` file in `/path/to/your/firefox profile/chrome` folder:
+
+```
+a {
+    color: #000000 !important;
+    background-color:transparent !important; /* necessary so link is always readable */
+    text-decoration: underline !important; 
+}  /* Unvisited link color */
+
+a:visited {
+    color: #7f7f7f !important;
+    background-color:transparent !important; /* necessary so link is always readable */
+    text-decoration: underline !important; 
+}   /* Visited link color */
+
+```
+
+This will override all sites to make all links underlined (a bit heavy but very visible), unvisited link in full black and visited links in medium gray.
