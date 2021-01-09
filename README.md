@@ -75,6 +75,7 @@ If `ddcutil` does not detect your monitor, look into its documentation for possi
 ##### Drawbacks
 
 - does not work with all monitors
+- does not work with laptop panels as they do not support DDC/CI 
 
 ## Comparison between compositor and NVIDIA methods
 
