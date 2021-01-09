@@ -61,7 +61,7 @@ You will need to install the `ddcutil` tool, likely available as a package for y
 Your monitor must support DDC/CI. Most of them support it, but on some monitors DDC/CI can be enabled/isabled in its OSD, so make sure
 to check that.
 
-Then try `toggle-monitor-grayscale ddc` to check if `ddcutil` detects your monitor and supports changing the saturation attribute.
+Then try `toggle-monitor-grayscale.sh ddc` to check if `ddcutil` detects your monitor and supports changing the saturation attribute.
 If `ddcutil` does not detect your monitor, look into its documentation for possible solutions.
 
 ##### Advantages
