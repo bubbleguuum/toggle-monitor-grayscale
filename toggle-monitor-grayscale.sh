@@ -10,18 +10,22 @@ function usage {
     echo
     echo "Toggle monitors between color and grayscale mode."
     echo 
-    echo "$bin [$compositor|nvidia|auto]"
+    echo "$bin [$compositor|nvidia|ddc|auto]"
     echo "$bin $compositor [$compositor args]"
-    echo "$bin nvidia [monitor]"
+    echo "$bin nvidia [nv mon]"
+    echo "$bin ddc [ddc mon]"
     echo
-    echo "$compositor:   use a glx shader to set grayscale"
+    echo "$compositor:   use a GLX shader to set grayscale"
     echo "nvidia:  use NVIDIA proprietary driver Digital Vibrance setting to set grayscale"
-    echo "auto:    use $compositor if running, otherwise nvidia if available"
+    echo "ddc:     use DDC/CI monitor protocol to set the monitor saturation to 0 (grayscale) if supported by monitor"
+    echo "auto:    use $compositor if running, otherwise nvidia if available, otherwise ddc if available"
     echo
     echo "$compositor args: in $compositor mode, optional $compositor parameters"
-    echo "monitor:    in nvidia mode, an optional monitor name as enumerated by xrandr."
-    echo "            if unspecified, apply to all monitors managed by the NVIDIA driver"
     echo
+    echo "nv mon:     in nvidia mode, an optional monitor name as enumerated by xrandr."
+    echo "            if unspecified, apply to all monitors managed by the NVIDIA driver"
+    echo "ddc mon:    in ddc mode, optional ddcutil options to identify the monitor. See 'man ddcutil'"
+    echo "            if unspecified, apply to the first monitor detected by ddcutil"
     echo "if invoked with no argument, auto is used."
     echo
 
@@ -34,7 +38,7 @@ function toggle_nvidia {
     
     value=$(nvidia-settings -t -q DigitalVibrance)
 
-    # set a value in [-1024..0[ range to desaturate colors instead of full grayscale
+    # set a value in ]-1024..0[ range to desaturate colors instead of full grayscale
     # -1024 => full grayscale
     desaturate_value=-1024
     
@@ -73,6 +77,43 @@ function toggle_compositor {
     fi
 }
 
+function toggle_ddc {
+    
+    out=($(ddcutil $* getvcp 8a -t))
+    
+    if (( $? != 0 )); then
+	echo "ddc: this monitor does not support saturation control"
+	exit 1
+    fi
+
+    # out array:
+    #
+    # VCP 8A C 100 200
+    #           |   |
+    #          cur max
+   
+    if (( ${#out[@]} != 5 )); then
+	echo "ddc: unexpected output getting current saturation state"
+	exit 1
+    fi
+
+    cur_saturation=${out[3]}
+    max_saturation=${out[4]}
+
+    # set a value in ]0..max/2[ range to desaturate colors instead of full grayscale
+    # 0 => full grayscale
+    desaturate_value=0
+
+    if (( cur_saturation == desaturate_value  )); then
+	new_saturation=$(( max_saturation / 2 )) # nominal saturation 
+	toggle_mode="color"
+    else
+        new_saturation=$desaturate_value
+	toggle_mode="grayscale"
+    fi
+
+    ddcutil $* setvcp 8a $new_saturation
+}
 
 mode=$1
 
@@ -90,11 +131,17 @@ case $mode in
 	;;
 
     nvidia)
-	if ! which nvidia-settings > /dev/null; then
+	if ! which nvidia-settings &> /dev/null; then
 	    echo "nvidia-settings is not installed"
 	    exit 1
 	fi
-    ;;
+	;;	   	
+    ddc)
+	if ! which ddcutil &> /dev/null; then 
+	    echo "ddcutil is not installed"
+	    exit 1
+	fi
+        ;;
     
     *)
 	[ -z "$mode" ] && mode=auto
@@ -103,16 +150,18 @@ case $mode in
 
 	    if pgrep -x $compositor > /dev/null; then
 		mode=$compositor
-	    elif which nvidia-settings > /dev/null; then
+	    elif which nvidia-settings &> /dev/null; then
 		mode=nvidia
+	    elif which ddcutil &> /dev/null; then
+		mode=ddc
 	    else
-		echo "neither running $compositor nor nvidia-settings installed"
+		echo "neither $compositor is running, nor nvidia-settings installed, nor ddcutil installed"
 		exit 1
 	    fi
 	else
 	    usage
 	fi
-    
+	
 esac
 
 # pass eventual remaining arguments to toggle_* function
@@ -122,8 +171,10 @@ fi
 
 if [ "$mode" = "nvidia" ]; then
     toggle_nvidia $*
-else
+elif [ "$mode" = "$compositor" ]; then
     toggle_compositor $*
+else
+    toggle_ddc $*
 fi
 
 if (( $? == 0 )); then
