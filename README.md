@@ -12,7 +12,7 @@ Try it and you might be surprised !
 
 ## How does it work ?
 
-The script can turn the screen to grayscale using 2 separate methods
+The script can turn the screen to grayscale using 3 separate methods
 
 ### Compositor based method
 
@@ -40,9 +40,9 @@ colors to grayscale.
 ##### Advantages
 
 - not specific to a compositor
-- can be set to only a specific monitor (see usage)
+- can be applied to only a specific monitor (see usage)
 - can be used to only desaturate colors instead of full grayscale. 
-  Edit script and set variable `desaturate_value` to a value between -1024 and 0 (-1024 => full grayscale)
+  Edit script and set variable `desaturate_value` in function `toggle_nvidia` to a value between -1024 and 0 (-1024 => full grayscale)
 - simplier than restarting the compositor  
 
 ##### Drawbacks
@@ -52,7 +52,31 @@ colors to grayscale.
 - minor: grayscale persists if you exit Xorg without resetting color
 - minor: Digital Vibrance cannot be captured on screenshots, thus always in color
 
-## Comparison between the 2 methods
+### DDC/CI based method
+
+DDC/CI is a protocol that allows a program to change monitor settings, such as contrast, brightness and more.
+Here, we use program [`ddcutil`](https://github.com/rockowitz/ddcutil/) to change the saturation parameter of a monitor (if it supports it), setting saturation to 0 for grayscale.
+
+You will need to install the `ddcutil` tool, likely available as a package for your distro.
+Your monitor must support DDC/CI. Most of them support it, but on some monitors DDC/CI can be enabled/isabled in its OSD, so make sure
+to check that.
+
+Then try `toggle-monitor-grayscale ddc` to check if `ddcutil` detects your monitor and supports changing the saturation attribute.
+If `ddcutil` does not detect your monitor, look into its documentation for possible solutions.
+
+##### Advantages
+
+- not specific to a compositor nor graphic card
+- can be applied to only a specific monitor (see usage)
+- can be used to only desaturate colors instead of full grayscale. 
+  Edit script and set variable `desaturate_value` in function `toggle_ddc` to a value between 0 and maximum saturation / 2 (0 => full grayscale)
+- simplier than restarting the compositor  
+
+##### Drawbacks
+
+- does not work with all monitors
+
+## Comparison between compositor and NVIDIA methods
 
 It is not possible to make a screenshot of a graycaled screen with the NVIDIA method (unlike the compositor method).
 The only way I've found to compare them is to take a screenshot of the screen in color and a second screenshot with the compositor method in grayscale.
@@ -73,20 +97,22 @@ wget https://raw.githubusercontent.com/bubbleguuum/toggle-monitor-grayscale/main
 ```
 toggle-monitor-grayscale.sh -h
 
-Toggle monitors between color and grayscale mode.
-
-toggle-monitor-grayscale.sh [picom|nvidia|auto]
+toggle-monitor-grayscale.sh [picom|nvidia|ddc|auto]
 toggle-monitor-grayscale.sh picom [picom args]
-toggle-monitor-grayscale.sh nvidia [monitor]
+toggle-monitor-grayscale.sh nvidia [nv mon]
+toggle-monitor-grayscale.sh ddc [ddc mon]
 
-picom:   use a picom glx shader to set grayscale
+picom:   use a GLX shader to set grayscale
 nvidia:  use NVIDIA proprietary driver Digital Vibrance setting to set grayscale
-auto:    use picom if running, othewise nvidia if available
+ddc:     use DDC/CI monitor protocol to set the monitor saturation to 0 (grayscale) if supported by monitor
+auto:    use picom if running, otherwise nvidia if available, otherwise ddc if available
 
 picom args: in picom mode, optional picom parameters
-monitor: in nvidia mode, an optional monitor name as listed by xrandr
-         if unspecified, apply to all monitors managed by the NVIDIA driver
 
+nv mon:     in nvidia mode, an optional monitor name as enumerated by xrandr.
+            if unspecified, apply to all monitors managed by the NVIDIA driver
+ddc mon:    in ddc mode, optional ddcutil options to identify the monitor. See 'man ddcutil'
+            if unspecified, apply to the first monitor detected by ddcutil
 if invoked with no argument, auto is used.
 ```
 
