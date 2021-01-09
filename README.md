@@ -12,7 +12,7 @@ Try it and you might be surprised !
 
 ## How does it work ?
 
-The script can turn the screen to grayscale using 3 separate methods
+The script can turn the monitor into grayscale using 3 separate methods:
 
 ### Compositor based method
 
