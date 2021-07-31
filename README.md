@@ -1,5 +1,5 @@
 # toggle-monitor-grayscale
-This script toggles your Xorg monitor(s) between color and grayscale.
+This script toggles your Xorg monitor(s) between color and grayscale (the DDC monitor works with Wayland).
 It can be bound to a keyboard shortcut to easily toggle on the fly.
 
 ## Why ?
@@ -67,6 +67,7 @@ If `ddcutil` does not detect your monitor, look into its documentation for possi
 ##### Advantages
 
 - not specific to a compositor nor graphic card
+- works with Wayland
 - can be applied to only a specific monitor (see usage)
 - can be used to only desaturate colors instead of full grayscale. 
   Edit script and set variable `desaturate_value` in function `toggle_ddc` to a value between 0 and maximum saturation / 2 (0 => full grayscale)
