@@ -1,5 +1,5 @@
 # toggle-monitor-grayscale
-This script toggles your Xorg monitor(s) between color and grayscale (the DDC monitor works with Wayland).
+This script toggles your Xorg monitor(s) between color and grayscale.  The DDC method works with Wayland.
 It can be bound to a keyboard shortcut to easily toggle on the fly.
 
 ## Why ?
