@@ -58,7 +58,7 @@ DDC/CI is a protocol that allows a program to change monitor settings, such as c
 Here, we use program [`ddcutil`](https://github.com/rockowitz/ddcutil/) to change the saturation parameter of a monitor (if it supports it), setting saturation to 0 for grayscale.
 
 You will need to install the `ddcutil` tool, likely available as a package for your distro.
-Your monitor must support DDC/CI. Most of them support it, but on some monitors DDC/CI can be enabled/isabled in its OSD, so make sure
+Your monitor must support DDC/CI. Most of them support it, but on some monitors DDC/CI can be enabled/disabled in its OSD, so make sure
 to check that.
 
 Then try `toggle-monitor-grayscale.sh ddc` to check if `ddcutil` detects your monitor and supports changing the saturation attribute.
