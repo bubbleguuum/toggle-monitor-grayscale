@@ -61,7 +61,16 @@ function toggle_nvidia {
 
 function toggle_compositor {
 
-    if pgrep -a -x $compositor | grep glx-fshader-win > /dev/null; then
+
+    if $compositor --help | grep legacy-backends > /dev/null; then
+	use_experimental_backends=1;
+	grep_string="window-shader-fg"
+    else
+	use_experimental_backends=0;
+	grep_string="glx-fshader-win"
+    fi
+    
+    if pgrep -a -x $compositor | grep $grep_string  > /dev/null; then
 	pkill -x $compositor
 	sleep 1
 	$compositor $* -b
@@ -70,9 +79,38 @@ function toggle_compositor {
 	pkill -x $compositor
 	sleep 1
 
-	shader='uniform sampler2D tex; uniform float opacity; void main() { vec4 c = texture2D(tex, gl_TexCoord[0].xy); float y = dot(c.rgb, vec3(0.2126, 0.7152, 0.0722)); gl_FragColor = opacity*vec4(y, y, y, c.a); }'
-	
-	$compositor $* -b --backend glx --glx-fshader-win "${shader}" 2> /dev/null
+	if (( $use_experimental_backends == 1 )); then
+
+	    tmpfile=$(mktemp)
+	    trap 'rm -f "${tmpfile}"' EXIT
+
+	    cat > ${tmpfile} <<EOF
+#version 330
+in vec2 texcoord;
+
+uniform sampler2D tex;
+uniform float opacity;
+
+vec4 default_post_processing(vec4 c);
+
+vec4 window_shader() {
+    vec4 c = texelFetch(tex, ivec2(texcoord), 0);
+    float y = dot(c.rgb, vec3(0.2126, 0.7152, 0.0722));
+    c = opacity*vec4(y, y, y, c.a);
+    return default_post_processing(c);
+}
+EOF
+	    
+	    $compositor $* -b --backend glx --window-shader-fg ${tmpfile} 2> /dev/null
+
+	else
+
+	    shader='uniform sampler2D tex; uniform float opacity; void main() { vec4 c = texture2D(tex, gl_TexCoord[0].xy); float y = dot(c.rgb, vec3(0.2126, 0.7152, 0.0722)); gl_FragColor = opacity*vec4(y, y, y, c.a); }'
+	    $compositor $* -b --backend glx --glx-fshader-win "${shader}" 2> /dev/null
+
+	fi
+	    
+	    
 	toggle_mode="grayscale"
     fi
 }
