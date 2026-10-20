@@ -42,7 +42,7 @@ function toggle_nvidia {
     # -1024 => full grayscale
     desaturate_value=-1024
     
-    if (( value == $desaturate_value )); then
+    if (( value == desaturate_value )); then
 	value=0
 	toggle_mode="color"
     else
@@ -61,15 +61,16 @@ function toggle_nvidia {
 
 function toggle_compositor {
 
-
-    if $compositor --help | grep legacy-backends > /dev/null; then
-	use_experimental_backends=1;
+    if $compositor --help | grep "window-shader-fg" > /dev/null; then
+        # newer version of picom
+	newer_picom=1;
 	grep_string="window-shader-fg"
     else
-	use_experimental_backends=0;
+        # older version of picom
+	newer_picom=0;
 	grep_string="glx-fshader-win"
     fi
-    
+
     if pgrep -a -x $compositor | grep $grep_string  > /dev/null; then
 	pkill -x $compositor
 	sleep 1
@@ -79,7 +80,7 @@ function toggle_compositor {
 	pkill -x $compositor
 	sleep 1
 
-	if (( $use_experimental_backends == 1 )); then
+	if (( newer_picom == 1 )); then
 
 	    tmpfile=$(mktemp)
 	    trap 'rm -f "${tmpfile}"' EXIT
@@ -117,7 +118,7 @@ EOF
 
 function toggle_ddc {
     
-    out=($(ddcutil $* getvcp 8a -t))
+    out=($(ddcutil $* getvcp 8a -t 2> /dev/null))
     
     if (( $? != 0 )); then
 	echo "ddc: this monitor does not support saturation control"
@@ -150,7 +151,7 @@ function toggle_ddc {
 	toggle_mode="grayscale"
     fi
 
-    ddcutil $* setvcp 8a $new_saturation
+    ddcutil $* setvcp 8a $new_saturation 2> /dev/null
 }
 
 mode=$1
