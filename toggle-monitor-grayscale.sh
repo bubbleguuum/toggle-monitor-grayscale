@@ -63,11 +63,18 @@ function toggle_compositor {
 
     if $compositor --help | grep "window-shader-fg" > /dev/null; then
         # newer version of picom
-	newer_picom=1;
+	newer_picom=1
 	grep_string="window-shader-fg"
+
+        if $compositor --help | grep "root-pixmap-shader" > /dev/null; then
+            has_root_pixmap_shader_opt=1
+        else
+            has_root_pixmap_shader_opt=0
+        fi
+
     else
         # older version of picom
-	newer_picom=0;
+	newer_picom=0
 	grep_string="glx-fshader-win"
     fi
 
@@ -101,8 +108,12 @@ vec4 window_shader() {
     return c;
 }
 EOF
-	    
-	    $compositor $* -b --backend glx --window-shader-fg ${tmpfile} 2> /dev/null
+
+            if (( has_root_pixmap_shader_opt == 1 )); then
+                root_pixmap_shader_opt="--root-pixmap-shader ${tmpfile}"
+            fi
+
+	    $compositor $* -b --backend glx --window-shader-fg ${tmpfile} ${root_pixmap_shader_opt} 2> /dev/null
 
 	else
 
